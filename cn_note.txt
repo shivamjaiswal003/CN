@@ -1,0 +1,183 @@
+package crc;
+import java.util.*;
+public class Main
+{
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int data_bits;
+		int divisor_bits;
+		
+		
+		System.out.println("Enter the number of data bits");
+		data_bits=sc.nextInt();
+		int i;
+		int data[]=new int[data_bits];
+		System.out.println("Enter the data bits");
+		for(i=0;i<data_bits;i++)
+		{
+		    data[i]=sc.nextInt();
+		    
+		}
+		System.out.println("Enter the number of divisor");
+		divisor_bits=sc.nextInt();
+		int divisor[]=new int[divisor_bits];
+		System.out.println("Enter the divisor bits");
+		for(i=0;i<divisor_bits;i++)
+		{
+		    divisor[i]=sc.nextInt();
+		    
+		}  
+		int tot_length;
+		tot_length=data_bits+divisor_bits-1;
+		int[] div=new int[tot_length];
+		int[] rem=new int[tot_length];
+		int[] crc=new int[tot_length];
+		for(i=0;i<data.length;i++)
+		{
+		    div[i]=data[i];
+		}
+		System.out.println("The appended data is");
+		for(int j=0;j<div.length;j++)
+		{
+		    System.out.println(""+div[j]);
+		}
+		for(int j=0;j<div.length;j++)
+		{
+		    rem[j]=div[j];
+		}
+		rem=divide(div,divisor,rem);
+		for(i=0;i<div.length;i++)
+		{
+		    crc[i]=div[i]^rem[i];
+		}
+		System.out.println("The crc output is:");
+		for(i=0;i<div.length;i++)
+		{
+		    System.out.println(""+crc[i]);
+		}
+		System.out.println("enter the crc code:");
+        for(i=0;i<crc.length;i++)
+        {
+            crc[i]=sc.nextInt();
+        }
+        for(int j=0;j<crc.length;j++)
+        {
+            rem[j]=crc[j];
+        }
+        rem=divide(crc,divisor,rem);
+        for(i=0;i<rem.length;i++)
+        {
+            if(rem[i]!=0)
+            {
+                System.out.println("Error");
+                break;
+            }
+            if(i==rem.length-1)
+            {
+                System.out.println("no error");
+            }
+        }
+		
+		
+	}
+	public static int[] divide(int[] div,int[] divisor,int[] rem)
+	{
+	    int cnt=0;
+	    while(true)
+	    {
+	        for(int i=0;i<divisor.length;i++)
+	        {
+	        rem[cnt+i]=rem[cnt+i]^divisor[i];
+	        }
+	        while(rem[cnt]==0 && cnt!=rem.length-1)
+	        {
+	            cnt++;
+	        }
+	        if(rem.length-cnt<divisor.length)
+	        {
+	            break;
+	        }
+	    }
+	    return rem;
+	}
+}
+
+
+
+
+
+package bellman;
+import java.util.Scanner;
+
+public class Bellmanford {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter vertex num :");
+		int v = sc.nextInt();
+		int g[][] = new int[v][v];
+		System.out.println("Enter the values for the matrix :");
+		for(int i=0;i<v;i++) {
+			for(int j=0;j<v;j++) {
+				g[i][j] = sc.nextInt();
+			}
+		}
+		System.out.println("Enter destination:");
+		int dest = sc.nextInt();
+		int d[] = new int[v];
+		java.util.Arrays.fill(d, 999);
+		d[dest-1] = 0;
+		for(int i=0;i<v-1;i++) {
+			for(int j=0;j<v;j++) {
+				for(int k=0;k<v;k++) {
+					int c = g[j][k];
+					if(d[j]!= 999 && d[j]+c< d[k]) {
+						d[k] = d[j]+c;
+					}
+				}
+			}
+		}
+		for(int i=0;i<v;i++) {
+			System.out.println(i +" = "+ d[i]);
+		}
+	}
+
+}
+
+
+
+
+
+
+package leaky;
+import java.util.*;
+public class Main{
+	public static void main(String[] args) { 
+		System.out.println("enter the number of timeintervals"); 
+		Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt(); 
+		int t[]=new int[n];
+			System.out.println("enter the timeintervals"); 
+			for(int i=0;i<n;i++)
+				t[i]=sc.nextInt(); 
+				System.out.println("enter i and l");
+				int i=sc.nextInt();
+				int l=sc.nextInt(); 
+				int lct=t[0];
+				int x=0,y=0;
+				for(int j=0;j<n;j++)
+				{
+					y=x-(t[j]-lct); 
+					if(y>l)
+					{
+						System.out.println("nonconforming packet"+" "+t[j]+" "+"content of the bucket is"+" "+x+" "+"\n");
+					}
+					else{
+						x=y+i;
+						lct=t[j];
+						System.out.println("conforming packet"+" "+t[j]+" "+"content of the bucket is"+" "+x+" "+"\n");
+					}
+				}
+	}
+	
+}
